@@ -47,87 +47,149 @@ const characters = [
 
 const scenes: Scene[] = [
     {
-        id: "scene_1",
-        title: "First Contact",
-        description: "Love rolls by and asks if you are humming. Emotional subroutines activate.",
+        id: "scene_start",
+        title: "The Mysterious Note",
+        description: "Sassy Susan is walking past the CLA when she slips on a note that reads: 'I like you!' The hallway suddenly feels very suspicious.",
         choices: [
             {
-                id: "compliment",
-                text: "Compliment Love",
-                nextScene: "scene_2A"
+                id: "announce",
+                text: "Loudly ask who wrote the note",
+                nextScene: "scene_public_confession"
             },
             {
-                id: "lift_table",
-                text: "Lift a table to impress her",
-                nextScene: "scene_2A"
-            },
-            {
-                id: "romantic_fact",
-                text: "Recite a romantic fact",
-                nextScene: "scene_2A"
+                id: "investigate",
+                text: "Casually investigate the handwriting",
+                nextScene: "scene_investigation"
             }
         ]
     },
 
     {
-        id: "scene_2A",
-        title: "Cupcake Mission",
-        description: "You help Love deliver cupcakes. A stack of boxes starts to fall!",
+        id: "scene_public_confession",
+        title: "Public Confession Chaos",
+        description: "Susan shouts her question. Everyone freezes. A janitor drops a mop. Confidence is required.",
         choices: [
             {
-                id: "catch_boxes",
-                text: "Catch all the boxes",
-                nextScene: "scene_3A"
+                id: "lock_eyes",
+                text: "Lock eyes with Justin Mosley",
+                nextScene: "scene_justin_confrontation"
             },
             {
-                id: "calculate_trajectory",
-                text: "Calculate optimal catch path",
-                nextScene: "scene_3A"
-            },
-            {
-                id: "charm_joke",
-                text: "Charm Love with a joke",
-                nextScene: "bad_end"
+                id: "panic",
+                text: "Panic and flee to the vending machines",
+                nextScene: "ending_vending_machine"
             }
         ]
     },
 
     {
-        id: "scene_2B",
-        title: "Awkward Moment",
-        description: "Things feel a little weird. Love seems unsure.",
+        id: "scene_investigation",
+        title: "Sneaky Investigation",
+        description: "Susan studies the handwriting and notices Justin Mosley acting extremely normal in a suspicious way.",
         choices: [
             {
-                id: "recover",
-                text: "Try to recover and keep going",
-                nextScene: "scene_3A"
+                id: "confront",
+                text: "Politely confront Justin",
+                nextScene: "scene_justin_confrontation"
+            },
+            {
+                id: "follow",
+                text: "Follow Justin like a rom-com detective",
+                nextScene: "scene_following_justin"
             }
         ]
     },
 
     {
-        id: "scene_3A",
-        title: "Charging Dock Confession",
-        description: "The café closes. Love stands beside you near the charging docks.",
+        id: "scene_following_justin",
+        title: "Following Justin",
+        description: "Susan attempts stealth. She immediately trips over a backpack. Stealth skill required.",
         choices: [
             {
-                id: "ask_valentine",
-                text: "Ask Love to be your Valentine",
-                nextScene: "good_end"
+                id: "reveal",
+                text: "Reveal yourself dramatically",
+                nextScene: "scene_justin_confrontation"
             },
             {
-                id: "give_gift",
-                text: "Give a perfectly calculated gift",
-                nextScene: "bittersweet_end"
-            },
-            {
-                id: "carry_home",
-                text: "Offer to carry her home",
-                nextScene: "bittersweet_end"
+                id: "hide",
+                text: "Hide behind a clearly too-small plant",
+                nextScene: "ending_plant"
             }
         ]
+    },
+
+    {
+        id: "scene_justin_confrontation",
+        title: "Justin Revealed",
+        description: "Justin admits the note was for Susan. Romance sparks — until Billy Bob bursts in demanding a Valentine date.",
+        choices: [
+            {
+                id: "say_yes_bob",
+                text: "Say yes to Billy Bob out of confusion",
+                nextScene: "ending_bad_billy_bob"
+            },
+            {
+                id: "choose_justin",
+                text: "Say no and choose Justin",
+                nextScene: "scene_post_conflict"
+            }
+        ]
+    },
+
+    {
+        id: "scene_post_conflict",
+        title: "After the Drama",
+        description: "Billy Bob storms off dramatically. The hallway settles. Justin looks hopeful. Susan must decide what she wants.",
+        choices: [
+            {
+                id: "date_justin",
+                text: "Go on Valentine's Day dinner with Justin",
+                nextScene: "ending_good"
+            },
+            {
+                id: "go_home",
+                text: "Decide love is too chaotic and go home",
+                nextScene: "ending_neutral"
+            }
+        ]
+    },
+
+    {
+        id: "ending_good",
+        title: "True Valentine",
+        description: "Susan and Justin have a sweet Valentine's Day. Fries are shared. Chaos rests. Love wins.",
+        choices: []
+    },
+
+    {
+        id: "ending_bad_billy_bob",
+        title: "Billy Bob Date Night",
+        description: "Billy Bob brings his mom's, coupons, and asks to split the bill. Justin skateboards away sadly.",
+        choices: []
+    },
+
+    {
+        id: "ending_neutral",
+        title: "Self Love Ending",
+        description: "Susan stays home, eats chocolate, and watches rom-coms. Justin texts a heart emoji. Peaceful.",
+        choices: []
+    },
+
+    {
+        id: "ending_vending_machine",
+        title: "Vending Machine Betrayal",
+        description: "Susan leans on a vending machine. It tips over. She's trapped until maintenance arrives.",
+        choices: []
+    },
+
+    {
+        id: "ending_plant",
+        title: "Plant Justice",
+        description: "Security escorts Susan out for hiding behind a plant. Valentine's Day is spent banned from the building.",
+        choices: []
     }
-]
+];
+
 
 // ---------- CHOICES HELPER FUNCTIONS -----------
 
@@ -156,8 +218,15 @@ function handleChoices(sce: Scene) {
     for (let choice of sce.choices) {
         choiceTexts.push(choice.text)
     }
-    story.showPlayerChoices(choiceTexts[0], choiceTexts[1], choiceTexts[2]) // Display the choices
+    if (choiceTexts.length < 2) {
+        console.log('ERROR: THERE MUST BE AT LEAST 2 CHOICES')
 
+    } else if (choiceTexts.length == 2) {
+        story.showPlayerChoices(choiceTexts[0], choiceTexts[1]) // Display the choices
+
+    } else if (choiceTexts.length == 3) {
+        story.showPlayerChoices(choiceTexts[0], choiceTexts[1], choiceTexts[2]) // Display the choices
+    }
     // After the player picks a choice, check the result
     story.startCutscene(function () {
         let selectedChoice = story.getLastAnswer() // Get the last answer as a string
@@ -179,12 +248,15 @@ function transitionToNextScene(sceneId: string) {
 
     if (nextScene) {
         console.log('handling next scene: ' + nextScene)
+        if (nextScene.title === "Public Confession Chaos"){
+            scene.setBackgroundImage(assets.image`bg`)
+        }
         handleChoices(nextScene)
     } else {
         // Handle ending scenes
         console.log('handling ending scene: ' + sceneId)
-        if (sceneId === "good_end") {
-            story.printText("Synchronized systems. Love says yes.", 80, 90)
+        if (sceneId === "ending_good") {
+            story.printText("Susan and Justin have a sweet Valentine's Day. Fries are shared. Chaos rests. Love wins.", 80, 90)
         } else if (sceneId === "bad_end") {
             story.printText("Love reboots her feelings. You sweep alone.", 80, 90)
         } else if (sceneId === "early_end") {
@@ -202,7 +274,7 @@ function initializeElements() { //setup for some of the UI changes
 }
 
 function startStory() {
-    let firstScene = getSceneById("scene_1")
+    let firstScene = getSceneById("scene_start")
     if (firstScene) {
         handleChoices(firstScene)
     }
@@ -211,6 +283,7 @@ function startStory() {
 function runGame() {
     tiles.setCurrentTilemap(tilemap`level`)
     scene.cameraFollowSprite(playerSprite)
+    scene.setBackgroundImage(assets.image`Paper`)
     startStory()
 }
 
