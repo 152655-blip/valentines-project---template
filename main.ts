@@ -24,27 +24,6 @@ interface Scene {
 }
 
 // -------- DATA ----------
-const characters = [
-    {
-        name: 'robotnik',
-        roborizz: 5,
-        processingPower: 4,
-        memory: 7
-    },
-    {
-        name: 'roboamore',
-        roborizz: 9,
-        processingPower: 4,
-        memory: 3
-    },
-    {
-        name: 'robotalot',
-        roborizz: 3,
-        processingPower: 8,
-        memory: 5
-    }
-]
-
 const scenes: Scene[] = [
     {
         id: "scene_start",
@@ -152,41 +131,6 @@ const scenes: Scene[] = [
                 nextScene: "ending_neutral"
             }
         ]
-    },
-
-    {
-        id: "ending_good",
-        title: "True Valentine",
-        description: "Susan and Justin have a sweet Valentine's Day. Fries are shared. Chaos rests. Love wins.",
-        choices: []
-    },
-
-    {
-        id: "ending_bad_billy_bob",
-        title: "Billy Bob Date Night",
-        description: "Billy Bob brings his mom's, coupons, and asks to split the bill. Justin skateboards away sadly.",
-        choices: []
-    },
-
-    {
-        id: "ending_neutral",
-        title: "Self Love Ending",
-        description: "Susan stays home, eats chocolate, and watches rom-coms. Justin texts a heart emoji. Peaceful.",
-        choices: []
-    },
-
-    {
-        id: "ending_vending_machine",
-        title: "Vending Machine Betrayal",
-        description: "Susan leans on a vending machine. It tips over. She's trapped until maintenance arrives.",
-        choices: []
-    },
-
-    {
-        id: "ending_plant",
-        title: "Plant Justice",
-        description: "Security escorts Susan out for hiding behind a plant. Valentine's Day is spent banned from the building.",
-        choices: []
     }
 ];
 
@@ -250,19 +194,34 @@ function transitionToNextScene(sceneId: string) {
         console.log('handling next scene: ' + nextScene)
         if (nextScene.title === "Public Confession Chaos"){
             scene.setBackgroundImage(assets.image`bg`)
+        } else if (nextScene.title === "Sneaky Investigation"){
+            scene.setBackgroundImage(assets.image`rename_this`)//TODO: Make this background
+        } else if (nextScene.title === "Following Justin"){
+            scene.setBackgroundImage(assets.image`rename_this`)//TODO: Make this background
+        } else if (nextScene.title === "Justin Revealed"){
+            scene.setBackgroundImage(assets.image`rename_this`)//TODO: Make this background
+        } else if (nextScene.title === "After the Drama"){
+            scene.setBackgroundImage(assets.image`rename_this`)//TODO: Make this background
         }
         handleChoices(nextScene)
     } else {
         // Handle ending scenes
         console.log('handling ending scene: ' + sceneId)
         if (sceneId === "ending_good") {
+            scene.setBackgroundImage(assets.image`ending_good_bg`) //TODO: MAKE THIS BACKGROUND
             story.printText("Susan and Justin have a sweet Valentine's Day. Fries are shared. Chaos rests. Love wins.", 80, 90)
-        } else if (sceneId === "bad_end") {
-            story.printText("Love reboots her feelings. You sweep alone.", 80, 90)
-        } else if (sceneId === "early_end") {
-            story.printText("You lecture about appliance law for 12 minutes straight.", 80, 90)
-        } else if (sceneId === "bittersweet_end") {
-            story.printText("The moment passes. Maybe next Valentine's Day.", 80, 90)
+        } else if (sceneId === "ending_bad_billy_bob") {
+            scene.setBackgroundImage(assets.image`ending_bad_bg`) //TODO: MAKE THIS BACKGROUND
+            story.printText("Billy Bob brings his mom's, coupons, and asks to split the bill. Justin skateboards away sadly.", 80, 90)
+        } else if (sceneId === "ending_neutral") {
+            scene.setBackgroundImage(assets.image`ending_nuetral_bg`) //TODO: MAKE THIS BACKGROUND
+            story.printText("Susan stays home, eats chocolate, and watches rom-coms. Justin texts a heart emoji. Peaceful.",80, 90)
+        } else if (sceneId === "ending_vending_machine") {
+            scene.setBackgroundImage(assets.image`ending_vending_bg`) //TODO: MAKE THIS BACKGROUND
+            story.printText("Susan leans on a vending machine. It tips over. She's trapped until maintenance arrives.",80, 90)
+        } else if (sceneId === "ending_plant") {
+            scene.setBackgroundImage(assets.image`ending_plant_bg`) //TODO: MAKE THIS BACKGROUND
+            story.printText("Security escorts Susan out for hiding behind a plant. Valentine's Day is spent banned from the building.",80, 90)
         }
     }
 }
@@ -281,14 +240,12 @@ function startStory() {
 }
 
 function runGame() {
-    tiles.setCurrentTilemap(tilemap`level`)
-    scene.cameraFollowSprite(playerSprite)
     scene.setBackgroundImage(assets.image`Paper`)
     startStory()
 }
 
 function startGame() {
-    game.splash('Valentines Template: ', 'Your subtitle here')
+    game.splash('Valentines Template: ', 'Your subtitle here') //TODO: You're supposed to change this
     runGame()
 }   
 
